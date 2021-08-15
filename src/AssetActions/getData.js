@@ -3,7 +3,7 @@ import { STATE_CODES_ARRAY , DATE_RANGE } from './constant'
 
 export function GetData(url,method = 'get'){ 
   return new Promise((resolve, reject) => {
-    axios.get("https://api.covid19india.org/v4/min/"+url+".min.json")
+    axios.get("https://data.covid19india.org/v4/min/"+url+".min.json")
       .then(function ({data}) {
         resolve(data);
       })
