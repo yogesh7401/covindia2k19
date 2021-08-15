@@ -85,7 +85,7 @@ function GraphLayout(props) {
 const mapStateToProps = (state) => {
   return {
       data : state.allData,
-      districtData : state.districtData
+//       districtData : state.districtData
   }
 }
 
