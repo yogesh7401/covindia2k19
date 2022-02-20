@@ -6,11 +6,11 @@ import _ from "lodash"
 import Moment from 'moment'
 import Fade from 'react-reveal/Fade'
 import { useParams , Link } from 'react-router-dom'
+import { GetStateData } from "../../AssetActions/getData"
 
 function GraphLayout(props) {
     const params = useParams()
     const place = params.place
-    let getAllData = props.data
     const [ confirmedRange , setConfirmedRange ] = useState([])
     const [ recoveredRange , setRecoveredRange ] = useState([])
     const [ activeRange , setActiveRange ] = useState([])
@@ -37,7 +37,7 @@ function GraphLayout(props) {
     }
     useEffect(() => {
         console.log('useEffect')
-        getAllData
+        GetStateData()
             .then((response) => {
                 SetSelection(response,place)
             })

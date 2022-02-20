@@ -152,9 +152,9 @@ export const COLUMNS = [
 
 const date = []
 let startDate = moment("2020-03-26","YYYY-MM-DD")
-let currentDate = moment().format("YYYY-MM-DD")
+let endDate = moment("2021-10-30","YYYY-MM-DD")
 
-for (var m = moment(startDate); m.isBefore(currentDate); m.add(1, 'days')) {
+for (var m = moment(startDate); m.isBefore(endDate); m.add(1, 'days')) {
   date.push(m.format('YYYY-MM-DD'));
 }
 

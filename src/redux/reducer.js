@@ -46,7 +46,7 @@ store.dispatch({ type : 'SET_TIMESERIES_DATA' , payload : GetTimeSeriesByDate().
 
 store.dispatch({ type : 'SET_DISTRICT_DATA' , payload : GetStateData().then(e => {return e}) })
 
-store.dispatch({ type : 'SET_ALL_DATA' , payload : GetAllData().then(e => {return e}) })
+// store.dispatch({ type : 'SET_ALL_DATA' , payload : GetAllData().then(e => {return e}) })
 
 store.dispatch({ type : 'GET_DATA' })
 

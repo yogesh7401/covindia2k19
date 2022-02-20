@@ -64,18 +64,18 @@ export function GetStateData() {
           let key = state.code
           Object.keys(obj).map((e,i) => {
             let districtObj = obj[e] 
-            let confirmed = typeCheck(districtObj.total.confirmed)
-            let recovered = typeCheck(districtObj.total.recovered)
-            let deceased = typeCheck(districtObj.total.deceased)
+            let confirmed = typeCheck(districtObj.total?.confirmed)
+            let recovered = typeCheck(districtObj.total?.recovered)
+            let deceased = typeCheck(districtObj.total?.deceased)
             let active = confirmed - ( deceased + recovered )
             let isCovidFree = false
             if(active === 0 && confirmed > 0) {
               isCovidFree = true
               covidFreeDistrict.push({key : e+"_"+i,stateName,e})
             }
-            let tested = typeCheck(districtObj.total.tested)
-            let vaccinated1 = typeCheck(districtObj.total.vaccinated1 )
-            let vaccinated2= typeCheck(districtObj.total.vaccinated2) 
+            let tested = typeCheck(districtObj.total?.tested)
+            let vaccinated1 = typeCheck(districtObj.total?.vaccinated1 )
+            let vaccinated2= typeCheck(districtObj.total?.vaccinated2) 
             districtData.push({stateName:e,confirmed,recovered,deceased,active,tested,vaccinated1,vaccinated2,key : e+"_"+i,isCovidFree})
           })
           data.push({stateName,districtData,key})
