@@ -6,6 +6,7 @@ import India from '../../Assets/Image/india.svg'
 import Table from '../../Assets/Image/table.svg'
 import Graph from '../../Assets/Image/graph.svg'
 import { Link } from 'react-router-dom'
+import { GetAllData } from '../../AssetActions/getData'
 
 function Home(props) {
     let getData = props.data
@@ -13,6 +14,7 @@ function Home(props) {
     const [ loading , setLoading ] = useState(true)
     const [ cases , setCases ] = useState({})
     useEffect(() => {
+        GetAllData()
         getData
         .then(timeseriesData => {
             let InitialData = _.filter(timeseriesData , e => { return e.key === 'TT'})

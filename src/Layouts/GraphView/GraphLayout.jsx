@@ -6,7 +6,8 @@ import _ from "lodash"
 import Moment from 'moment'
 import Fade from 'react-reveal/Fade'
 import { useParams , Link } from 'react-router-dom'
-import { GetStateData } from "../../AssetActions/getData"
+import { GetStateData, GetTimeSeriesByDate } from "../../AssetActions/getData"
+import { DATE_RANGE } from "../../AssetActions/constant"
 
 function GraphLayout(props) {
     const params = useParams()
@@ -23,28 +24,31 @@ function GraphLayout(props) {
         let recovered = []
         let deceased = []
         let active = []
-        let initialData = _.filter(response.data , e => { return (e.stateName === state) })
-        _.map(initialData[0].stateData , e => { confirmed.push([Moment(e.date,'YYYY-MM-DD').valueOf(),e.confirmed]) })
-        _.map(initialData[0].stateData , e => { recovered.push([Moment(e.date,'YYYY-MM-DD').valueOf(),e.recovered]) })
-        _.map(initialData[0].stateData , e => { deceased.push([Moment(e.date,'YYYY-MM-DD').valueOf(),e.deceased]) })
-        _.map(initialData[0].stateData , e => { active.push([Moment(e.date,'YYYY-MM-DD').valueOf(),e.active]) })
-        setRange(response.range)
+        let initialData = _.filter(response , e => { return (e.stateName === state) })
+        console.log(initialData);
+        _.map(initialData[0].stateTimeseriesData , e => { confirmed.push([Moment(e.date,'YYYY-MM-DD').valueOf(),e.confirmed]) })
+        _.map(initialData[0].stateTimeseriesData , e => { recovered.push([Moment(e.date,'YYYY-MM-DD').valueOf(),e.recovered]) })
+        _.map(initialData[0].stateTimeseriesData , e => { deceased.push([Moment(e.date,'YYYY-MM-DD').valueOf(),e.deceased]) })
+        _.map(initialData[0].stateTimeseriesData , e => { active.push([Moment(e.date,'YYYY-MM-DD').valueOf(),e.active]) })
+        console.log(confirmed);
+        setRange(DATE_RANGE)
         setConfirmedRange(confirmed)
         setRecoveredRange(recovered)
         setActiveRange(active)
         setDeceasedRange(deceased)
         setLoading(false)
     }
+    let getData = props.data
     useEffect(() => {
-        console.log('useEffect')
-        GetStateData()
-            .then((response) => {
-                SetSelection(response,place)
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    },[place]) 
+        getData
+        .then((response) => {
+            console.log(response,place);
+            SetSelection(response,place)
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    },[place,getData]) 
     return (
         <>
         <Link to="/graph/India" className="text-primary class text-xl font-bold text-center p-2 px-4 bg-light rounded-lg m-3 ml-0">{'India'}</Link>

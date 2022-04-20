@@ -76,10 +76,11 @@ export function GetStateData() {
             let tested = typeCheck(districtObj.total?.tested)
             let vaccinated1 = typeCheck(districtObj.total?.vaccinated1 )
             let vaccinated2= typeCheck(districtObj.total?.vaccinated2) 
-            districtData.push({stateName:e,confirmed,recovered,deceased,active,tested,vaccinated1,vaccinated2,key : e+"_"+i,isCovidFree})
+            return districtData.push({stateName:e,confirmed,recovered,deceased,active,tested,vaccinated1,vaccinated2,key : e+"_"+i,isCovidFree})
           })
           data.push({stateName,districtData,key})
         }
+        return data
       })
       resolve(data)
     })
@@ -90,120 +91,28 @@ export function GetStateData() {
 
 export function GetAllData() {
   return new Promise((resolve, reject) => {
-    let allData = GetData("data-all","get")
-    let range = []
+    let allData = GetData("timeseries","get")
     allData
-      .then((response) => {
-        let data =[]
-        let allDistrictData = []
-        let perDayData = [] 
-        STATE_CODES_ARRAY.map(state => {
-          let stateName = state.name 
-          let stateData = []
-          let districtData = []
-          DATE_RANGE.map((date) => {
-            let stateDataTotal = ""
-            let districtDataTotal = ""
-            try {
-              stateDataTotal = response[date][state.code].total
-              districtDataTotal = response[date][state.code].districts
-              range.push(date)
-            }
-            catch {
-              
-            }
-            if(stateDataTotal !== "") {
-              let confirmed = typeCheck(stateDataTotal.confirmed)
-              let recovered = typeCheck(stateDataTotal.recovered)
-              let deceased = typeCheck(stateDataTotal.deceased)
-              let active = confirmed - ( recovered + deceased)
-              let vaccinated1 = typeCheck(stateDataTotal.vaccinated1)
-              let vaccinated2 = typeCheck(stateDataTotal.vaccinated2)
-              stateData.push({date,confirmed,recovered,deceased,active,vaccinated1,vaccinated2,stateName})
-            }
-            allDistrictData.push({perDayData,districtData,stateName})
-            data.push({stateName,stateData})
-          })
+    .then(res => {
+      let allStateData = []
+      STATE_CODES_ARRAY.map(state => {
+        console.log(state)
+        let stateTimeseriesData = []
+        let stateData = res[state.code]
+        DATE_RANGE.map(date => {
+          let confirmed = typeCheck(stateData.dates[date]?.total.confirmed)
+          let recovered = typeCheck(stateData.dates[date]?.total.recovered)
+          let deceased = typeCheck(stateData.dates[date]?.total.deceased)
+          let active = typeCheck(confirmed) - ( typeCheck(recovered) + typeCheck(deceased))
+          let vaccinated1 = typeCheck(stateData.dates[date]?.total.vaccinated1)
+          let vaccinated2 = typeCheck(stateData.dates[date]?.total.vaccinated2)
+          return stateTimeseriesData.push({ key : state.code , stateName: state.name,date: date,confirmed,recovered,deceased,active,vaccinated1,vaccinated2 })
         })
-        resolve({data,range,allDistrictData})
+        return allStateData.push({ stateName : state.name , stateCode : state.code , stateTimeseriesData })
       })
-      .catch((error) => {
-        reject(error)
-      })
+      resolve(allStateData)
+    })
+    .catch(e => reject(e))
   })
 }
-// droped function 
-// export function GetAllData() {
-//   return new Promise((resolve, reject) => {
-//     let allData = GetData("data-all","get")
-//     let range = []
-//     allData
-//       .then((response) => {
-//         let data =[]
-//         let allDistrictData = []
-//         let nameOfDistricts = []
-//         let perDayData = [] 
-//         STATE_CODES_ARRAY.map(state => {
-//           let stateName = state.name 
-//           let stateData = []
-//           let districtData = []
-//           DATE_RANGE.map((date) => {
-//             let stateDataTotal = ""
-//             let districtDataTotal = ""
-//             try {
-//               stateDataTotal = response[date][state.code].total
-//               districtDataTotal = response[date][state.code].districts
-//               range.push(date)
-//             }
-//             catch {
-              
-//             }
-//             if(stateDataTotal !== "") {
-//               let confirmed = typeCheck(stateDataTotal.confirmed)
-//               let recovered = typeCheck(stateDataTotal.recovered)
-//               let deceased = typeCheck(stateDataTotal.deceased)
-//               let active = confirmed - ( recovered + deceased)
-//               let vaccinated1 = typeCheck(stateDataTotal.vaccinated1)
-//               let vaccinated2 = typeCheck(stateDataTotal.vaccinated2)
-//               stateData.push({date,confirmed,recovered,deceased,active,vaccinated1,vaccinated2,stateName})
-//             }
-            
-//             // nameOfDistricts = []
-//             // if(districtDataTotal !== undefined) {
-//             //   Object.keys(districtDataTotal).map((key, index) => {
-//             //     let districtName = key
-//             //     nameOfDistricts.push(key)
-//             //     let confirmed = 0
-//             //     let recovered = 0 
-//             //     let deceased =  0
-//             //     let active = 0
-//             //     let vaccinated1 = 0
-//             //     let vaccinated2 = 0
-//             //     try {
-//             //       confirmed = typeCheck(districtDataTotal[key].total.confirmed)
-//             //       recovered = typeCheck(districtDataTotal[key].total.recovered)
-//             //       deceased = typeCheck(districtDataTotal[key].total.deceased)
-//             //       active = typeCheck(districtDataTotal[key].total.active)
-//             //       vaccinated1 = typeCheck(districtDataTotal[key].total.vaccinated1)
-//             //       vaccinated2 = typeCheck(districtDataTotal[key].total.vaccinated2)
-//             //     }
-//             //     catch {
-//             //     }
-//             //     perDayData.push({date,confirmed,recovered,deceased,active,vaccinated1,vaccinated2,districtName,stateName})
-//             //   })
-//             //   districtData.push({stateName,nameOfDistricts})
-//             // }
-//             allDistrictData.push({perDayData,districtData,stateName})
-//             data.push({stateName,stateData})
-            
-//           })
-//         })
-//         resolve({data,range,allDistrictData})
-//       })
-//       .catch((error) => {
-//         reject(error)
-//       })
-//   })
-// }
-
 
