@@ -159,13 +159,20 @@ for (var m = moment(startDate); m.isBefore(endDate); m.add(1, 'days')) {
 }
 
 const stateCodes = [];
+export let stateCodesKey = {}
 const stateCodesMap = {};
+export const arrayCode = []
 Object.keys(STATE_ABBR).map((key, index) => {
   stateCodesMap[STATE_ABBR[key]] = key;
   stateCodes.push({code: key, name: STATE_ABBR[key]});
+  // stateCodesKey.push({ [key] : key+" "+STATE_ABBR[key].toLowerCase()})
+  stateCodesKey = {
+    ...stateCodesKey,
+    [key] : key+" "+STATE_ABBR[key].toLowerCase()
+  }
+  arrayCode.push(key)
   return null;
 })
-
 export const STATE_CODES = stateCodesMap
 
 export const STATE_CODES_ARRAY = stateCodes

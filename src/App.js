@@ -4,7 +4,7 @@ import SideBar from './Layouts/SideBar/SideBar.jsx'
 import StateTable from './Layouts/TableView/StateTable.jsx'
 import { ReactComponent as UpIcon } from './Assets/Image/toTop.svg'
 import ScrollToTop from "react-scroll-to-top"
-
+import { useStore } from 'react-redux'
 import {
   BrowserRouter as Router,
   Switch,
@@ -12,8 +12,10 @@ import {
 } from "react-router-dom"
 import Zoom from 'react-reveal/Zoom'
 import GraphLayout from './Layouts/GraphView/GraphLayout'
+import Dashboard from './Layouts/Dashboard/dashboard'
 
 function App() {
+  const store = useStore().getState()
   return (
     <Router>
       <ScrollToTop smooth style={{background:"#e0fbfc"}} component={<UpIcon />}/>
@@ -26,10 +28,11 @@ function App() {
             </Zoom>
             <Switch>
               <Route exact  path="/" component={Home}/>
-              <Route path="/state-table" component={StateTable} />
-              <Route path="/state-map" component={India} />
+              <Route path="/state-table" render={() => <StateTable data={store.timeseries}/>} />
+              <Route path="/state-map" render={() => <India data={store.timeseries} />} />
               {/* <Route path="/graph/:place/:district?" component={GraphLayout}/> */}
-              <Route path="/graph/:place" component={GraphLayout}/>
+              <Route path="/graph/:place" render={() => <GraphLayout store={store.allData}/>}/>
+              <Route path="/dashboard" render={() => <Dashboard data={store.timeseries} allData={store.allData}/>}/>
             </Switch>
           </div>
         </div>

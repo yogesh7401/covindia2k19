@@ -96,7 +96,6 @@ export function GetAllData() {
     .then(res => {
       let allStateData = []
       STATE_CODES_ARRAY.map(state => {
-        console.log(state)
         let stateTimeseriesData = []
         let stateData = res[state.code]
         DATE_RANGE.map(date => {
