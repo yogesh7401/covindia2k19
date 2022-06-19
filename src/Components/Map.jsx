@@ -18,6 +18,7 @@ export default function Map({ slot, data, slotFilter, stateSelection }) {
   const [color, setColor] = useState(slot);
   let TotalData = data;
   let InitialData = useMemo(() => {
+    setColor(slot);
     if (TotalData !== undefined) {
       return TotalData.map((e) => {
         return {
@@ -92,7 +93,8 @@ export default function Map({ slot, data, slotFilter, stateSelection }) {
   }
 
   return (
-    <div>
+    <div className="w-auto">
+      {/* <p className="md:ml-10">{slot} cases in India</p> */}
       <ReactTooltip>{tooltipContent}</ReactTooltip>
       <ComposableMap
         projectionConfig={PROJECTION_CONFIG}

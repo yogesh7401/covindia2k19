@@ -111,6 +111,7 @@ export default class Chart extends React.Component {
     };
   }
   componentDidUpdate(nextProps) {
+    console.log(this.props);
     if (
       this.props.place !== nextProps.place ||
       this.props.name !== nextProps.name ||
@@ -254,7 +255,8 @@ export default class Chart extends React.Component {
   }
   render() {
     return (
-      <div id="chart" key={this.props.name}>
+      <div id="chart">
+        <p>Location: {this.props.place}</p>
         <div id="chart-timeline" style={{ marginTop: "20px" }}>
           <ReactApexChart
             options={this.state.options}
@@ -268,54 +270,56 @@ export default class Chart extends React.Component {
             height={350}
           />
         </div>
-        <div className="toolbar">
-          <button
-            id="one_month"
-            style={this.state.style}
-            onClick={() => this.updateData("one_week")}
-          >
-            Last 1 Week
-          </button>
-          &nbsp;
-          <button
-            id="one_month"
-            style={this.state.style}
-            onClick={() => this.updateData("one_month")}
-          >
-            Last 1 Month
-          </button>
-          &nbsp;
-          <button
-            id="six_months"
-            style={this.state.style}
-            onClick={() => this.updateData("six_months")}
-          >
-            Last 6 Months
-          </button>
-          &nbsp;
-          <button
-            id="one_year"
-            style={this.state.style}
-            onClick={() => this.updateData("one_year")}
-          >
-            2020
-          </button>
-          &nbsp;
-          <button
-            id="ytd"
-            style={this.state.style}
-            onClick={() => this.updateData("ytd")}
-          >
-            2021
-          </button>
-          &nbsp;
-          <button
-            id="all"
-            style={this.state.style}
-            onClick={() => this.updateData("all")}
-          >
-            ALL
-          </button>
+        <div className="flex w-full">
+          <div className="toolbar mx-auto">
+            <button
+              id="one_month"
+              style={this.state.style}
+              onClick={() => this.updateData("one_week")}
+            >
+              Last 1 Week
+            </button>
+            &nbsp;
+            <button
+              id="one_month"
+              style={this.state.style}
+              onClick={() => this.updateData("one_month")}
+            >
+              Last 1 Month
+            </button>
+            &nbsp;
+            <button
+              id="six_months"
+              style={this.state.style}
+              onClick={() => this.updateData("six_months")}
+            >
+              Last 6 Months
+            </button>
+            &nbsp;
+            <button
+              id="one_year"
+              style={this.state.style}
+              onClick={() => this.updateData("one_year")}
+            >
+              2020
+            </button>
+            &nbsp;
+            <button
+              id="ytd"
+              style={this.state.style}
+              onClick={() => this.updateData("ytd")}
+            >
+              2021
+            </button>
+            &nbsp;
+            <button
+              id="all"
+              style={this.state.style}
+              onClick={() => this.updateData("all")}
+            >
+              ALL
+            </button>
+          </div>
         </div>
       </div>
     );

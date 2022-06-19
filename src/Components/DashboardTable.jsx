@@ -7,6 +7,7 @@ export default function DashboardTable({ tableData }) {
       rowClassName={(record, index) =>
         index % 2 === 0 ? "bg-white font-bold" : " bg-light font-bold"
       }
+      className="overflow-y-hidden"
       dataSource={tableData}
       columns={COLUMNS}
       bordered

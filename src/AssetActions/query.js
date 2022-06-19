@@ -1,12 +1,10 @@
 import _ from "lodash"
 import { arrayCode, stateCodesKey } from "./constant"
 
-const keys = ["max","min","from","to","confirm","death","active","recover",...arrayCode]
+const keys = ["max","min","confirm","death","active","recover",...arrayCode]
 const keysObject = { 
     max : "max high top adjective great big large most supreme paramount extreme",
     min : "min low bottom base least slight depth nadir",
-    from : "from",
-    to : "to",
     confirm : "confirm positive",
     death: "death decease die pass loss",
     active: "active still",
@@ -21,7 +19,7 @@ function classifier(string) {
     let keyInString = []
     string = string.toLowerCase()
     keys.map(key => {
-        keysObject[key].split(" ").map(val => {
+        return keysObject[key].split(" ").map(val => {
             if(string.includes(val.toLowerCase())) {
                 keyInString.push(key)
             }
@@ -29,18 +27,38 @@ function classifier(string) {
     })
     return keyInString
 }
-export default function stringGenerator(string) {
-    // console.log(classifier(string))
+export default function QueryFilter(string,timeseriesData,periodicData,slot,sortOrder) {
     let keys = classifier(string)
+
+    if(keys.includes("confirm")) {
+        slot = "confirmed"
+    }else if(keys.includes("recover")) {
+        slot = "recovered"
+    }else if(keys.includes("active")) {
+        slot = "active"
+    }else if(keys.includes("death")) {
+        slot = "deceased"
+    }
     if(keys.includes("max")) {
-        // console.log(_.sortBy(data).reverse())
+        sortOrder = "desc"
+        timeseriesData = _.orderBy(timeseriesData,slot,"desc")
+        // periodicData = _.orderBy(periodicData,slot,"desc")
     }
     else if(keys.includes("min")) {
-        // console.log(_.sortBy(data));
+        sortOrder = "asc"
+        timeseriesData = _.orderBy(timeseriesData,slot,"desc")
+        // periodicData = _.orderBy(periodicData,slot,"desc")
     }
-    let code = keys.filter(key => {return arrayCode.includes(key)})
-    if(code.length !== 0){
-        // console.log(code[0]);
-        // fillter by code 
+    
+    // let code = keys.filter(key => {return arrayCode.includes(key)})
+    // if(code.length !== 0){
+    // }
+    console.log(timeseriesData);
+    return {
+        mapData: timeseriesData,
+        periodicData: periodicData,
+        sortOrder: sortOrder,
+        slot: slot
     }
+
 }
