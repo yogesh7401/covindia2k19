@@ -111,7 +111,6 @@ export default class Chart extends React.Component {
     };
   }
   componentDidUpdate(nextProps) {
-    console.log(this.props);
     if (
       this.props.place !== nextProps.place ||
       this.props.name !== nextProps.name ||

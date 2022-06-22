@@ -70,7 +70,6 @@
 import ReactApexChart from "react-apexcharts";
 
 export default function BarChart(props) {
-  console.log(props.data);
   let data = props.data.slice(0, 10);
   let name = data.map((e) => {
     return e.stateName;

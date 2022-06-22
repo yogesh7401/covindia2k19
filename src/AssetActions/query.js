@@ -1,5 +1,5 @@
 import _ from "lodash"
-import { arrayCode, stateCodesKey } from "./constant"
+import { arrayCode, stateCodesKey, STATE_ABBR } from "./constant"
 
 const keys = ["max","min","confirm","death","active","recover",...arrayCode]
 const keysObject = { 
@@ -16,6 +16,7 @@ function consist(string, key) {
     return true
 }
 function classifier(string) {
+    console.log("tokenized : "+string.split(" "));
     let keyInString = []
     string = string.toLowerCase()
     keys.map(key => {
@@ -29,7 +30,9 @@ function classifier(string) {
 }
 export default function QueryFilter(string,timeseriesData,periodicData,slot,sortOrder) {
     let keys = classifier(string)
-
+    console.log("classified : "+keys);
+    let stateCode = ""
+    let stateName = ""
     if(keys.includes("confirm")) {
         slot = "confirmed"
     }else if(keys.includes("recover")) {
@@ -42,23 +45,31 @@ export default function QueryFilter(string,timeseriesData,periodicData,slot,sort
     if(keys.includes("max")) {
         sortOrder = "desc"
         timeseriesData = _.orderBy(timeseriesData,slot,"desc")
-        // periodicData = _.orderBy(periodicData,slot,"desc")
     }
     else if(keys.includes("min")) {
         sortOrder = "asc"
         timeseriesData = _.orderBy(timeseriesData,slot,"desc")
-        // periodicData = _.orderBy(periodicData,slot,"desc")
     }
-    
+    keys.map(key => {
+        if(arrayCode.includes(key)) {
+            if(key !== " "){
+                stateCode = key
+            }
+        }
+    })
+    if(stateCode !== "" ) {
+        stateName = STATE_ABBR[stateCode]
+        console.log(STATE_ABBR[stateCode],stateCode);
+    }
     // let code = keys.filter(key => {return arrayCode.includes(key)})
     // if(code.length !== 0){
     // }
-    console.log(timeseriesData);
     return {
         mapData: timeseriesData,
         periodicData: periodicData,
         sortOrder: sortOrder,
-        slot: slot
+        slot: slot,
+        state: stateName
     }
 
 }
